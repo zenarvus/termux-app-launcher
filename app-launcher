@@ -1,0 +1,65 @@
+#!/bin/bash
+
+if [ "$1" = "generate" ]; then
+	appList=""
+
+	declare -A packagePaths
+
+	echo Getting apk paths...
+
+	#list all packages with their apk paths
+	while IFS= read -r line; do
+		#get the second value separated by space
+		package_name=${line##* }
+
+		#get the first value separated by space
+		apk_path=${line%% *}
+		#remove the package: prefix
+		apk_path=${apk_path#package:}
+
+		packagePaths[$package_name]=$apk_path
+
+	done < <(cmd package list packages --user 0 -e -f | sed 's/package://; s/\.apk=/\.apk /')
+
+	echo Getting app names and main activities...
+
+	#list all launchable apps
+	while IFS= read -r line; do
+
+		#remove whitespaces
+		packageMainActivity="${line//[[:space:]]/}"
+
+		#get package name from main activity path by getting the string before the slash
+		package_name="${packageMainActivity%%/*}"
+
+		#check if the apk path exists
+		if [[ -n "packagePaths[$package_name]" ]]; then
+
+			#extract the apk name
+			apk_label=$(aapt dump badging ${packagePaths[$package_name]} | grep -oP "application: label='\K[^']+" --color=never | sed "s/ /-/")
+
+			appList=$appList"$apk_label $packageMainActivity\n"
+		fi
+
+	done < <(cmd package query-activities --user 0 --brief -a android.intent.action.MAIN -c android.intent.category.LAUNCHER | grep -v -E "preferredOrder|cIndex|Activity #[0-9]+|[0-9]+ activities found")
+
+	printf "$appList" > $HOME/.app-list
+
+	echo "The app list is generated."
+
+elif [ "$1" = "select" ]; then
+	selected_line=$(cat $HOME/.app-list | fzf --header="Select an application:" --with-nth=1)
+
+	selected_package=$(echo $selected_line | awk '{print $2}')
+
+	echo $selected_package
+
+	am start -n "$selected_package" --user 0 &> /dev/null
+
+elif [ "$1" = "help" ]; then
+	echo "- help: displays all available commands."
+	echo "- generate: generates/updates the list of the installed apps."
+	echo "- select: spawn fzf to select and launch an application."
+else
+	echo "Command did not recognized. Please use help option to show available commands."
+fi
