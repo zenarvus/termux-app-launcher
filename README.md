@@ -1,11 +1,11 @@
 # Termux App Launcher
-An app launhcer for Termux, without hacking the apk file.
+An application launhcer for Termux, without hacking the apk file.
 
-Tested in android 11.
+Tested on android 11.
 
 ## Dependencies
-- [fzf](https://github.com/junegunn/fzf): Required. Used for selecting an app to launch.
-- [AnyHome](https://github.com/tytydraco/AnyHome): Optional but recommended. Used for making Termux the default launcher.
+- [fzf](https://github.com/junegunn/fzf): Required. Used for listing all installed applications.
+- [AnyHome](https://github.com/tytydraco/AnyHome): Optional, but recommended. Used for making Termux the default home launcher.
 - `am`, `cmd` and `aapt` commands in Termux.
 
 ## Installation
@@ -24,5 +24,5 @@ help: lists all available commands.
 
 select: spawn fzf to select and launch an application.
 
-generate: generate a list of currently installed files.
+generate: generate a list of currently installed applications.
 ```
