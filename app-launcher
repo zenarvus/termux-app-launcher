@@ -23,6 +23,18 @@ if [ "$1" = "generate" ]; then
 
 	echo Getting app names and main activities...
 
+	#get current list of apps in the app-list
+	declare -A currentAppList
+	while IFS= read -r line; do
+		#get the second value separated by space
+		package_name=${line##* }
+		package_name="${package_name%%/*}" #get the package name from the activity path
+
+		#get the first value separated by space
+		app_label=${line%% *}
+		currentAppList[$package_name]=$app_label
+	done < <(cat $HOME/.app-list 2> /dev/null)
+
 	#list all launchable apps
 	while IFS= read -r line; do
 
@@ -33,12 +45,15 @@ if [ "$1" = "generate" ]; then
 		package_name="${packageMainActivity%%/*}"
 
 		#check if the apk path exists
-		if [[ -n "packagePaths[$package_name]" ]]; then
+		if [[ -n "${packagePaths[$package_name]}" && -z "${currentAppList[$package_name]}" ]]; then
 
 			#extract the apk name
 			apk_label=$(aapt dump badging ${packagePaths[$package_name]} | grep -oP "application: label='\K[^']+" --color=never | sed "s/ /-/")
 
 			appList=$appList"$apk_label $packageMainActivity\n"
+
+		elif [[ -n "${packagePaths[$package_name]}" && -n "${currentAppList[$package_name]}" ]]; then
+			appList=$appList"${currentAppList[$package_name]} $packageMainActivity\n"
 		fi
 
 	done < <(cmd package query-activities --user 0 --brief -a android.intent.action.MAIN -c android.intent.category.LAUNCHER | grep -v -E "preferredOrder|cIndex|Activity #[0-9]+|[0-9]+ activities found")
@@ -48,18 +63,27 @@ if [ "$1" = "generate" ]; then
 	echo "The app list is generated."
 
 elif [ "$1" = "select" ]; then
-	selected_line=$(cat $HOME/.app-list | fzf --header="Select an application:" --with-nth=1)
+	if [ -e "$HOME/.app-list" ]; then
+		selected_line=$(sort $HOME/.app-list | fzf --header="Select an application:" --with-nth=1)
 
-	selected_package=$(echo $selected_line | awk '{print $2}')
+		selected_package=$(echo $selected_line | awk '{print $2}')
 
-	echo $selected_package
+		if [[ "$selected_package" == "com.termux" || "$selected_package" == "" ]]; then
+			exit 0
+		fi
 
-	am start -n "$selected_package" --user 0 &> /dev/null
+		echo $selected_package
+
+		am start -n "$selected_package" --user 0 &> /dev/null
+	else
+		echo "App list did not found. Use generate command to generate one."
+	fi
 
 elif [ "$1" = "help" ]; then
+	echo "Usage: app-launcher [argument]"
 	echo "- help: displays all available commands."
 	echo "- generate: generates/updates the list of the installed apps."
-	echo "- select: spawn fzf to select and launch an application."
+	echo "- select: spawns fzf to select and launch an application."
 else
 	echo "Command did not recognized. Please use help option to show available commands."
 fi

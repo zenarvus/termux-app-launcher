@@ -5,7 +5,7 @@ Tested on android 11.
 
 ## Dependencies
 - [fzf](https://github.com/junegunn/fzf): Required. Used for listing all installed applications.
-- [AnyHome](https://github.com/tytydraco/AnyHome): Optional, but recommended. Used for making Termux the default home launcher.
+- [AnyHome](https://github.com/tytydraco/AnyHome)/[TermuxLauncher](https://github.com/amsitlab/termuxlauncher): Optional, but recommended. Used for making Termux the default home launcher.
 - `am`, `cmd` and `aapt` commands in Termux.
 
 ## Installation
