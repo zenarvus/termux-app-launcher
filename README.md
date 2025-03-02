@@ -1,7 +1,7 @@
 # Termux App Launcher
 A simple android application launcher script for Termux.
 
-Tested on and built with android 11.
+Tested on android 11.
 
 ## Requirements
 - [fzf](https://github.com/junegunn/fzf): To list the applications.
