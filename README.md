@@ -3,6 +3,8 @@ A simple android application launcher script for Termux.
 
 Tested on android 11.
 
+No root required.
+
 ## Requirements
 - [fzf](https://github.com/junegunn/fzf): To list the applications.
 - `am`: To launch the application.
