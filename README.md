@@ -5,15 +5,15 @@ Tested on android 11.
 
 ## Requirements
 - [fzf](https://github.com/junegunn/fzf): To list the applications.
+- `aapt`: To extract the application label.
 - `am`: To launch the application.
 - `cmd`: To list the installed packages and paths.
-- `aapt`: To extract the application label.
 
-The last three are probably already installed.
+The last two are probably already installed.
 
-For the first one, use this command:
+For the first two, use this command:
 ```sh
-pkg install fzf -y
+pkg install fzf aapt -y
 ```
 
 ## Installation
@@ -37,6 +37,6 @@ generate: generates a list of currently installed applications.
 
 ## Recommendations
 You can also make Termux your default home screen with one of these cool applications:
+- [AnyHome](https://github.com/tytydraco/AnyHome) by [@tytydraco](https://github.com/tytydraco) (Works on newer versions of android)
+- [TermuxLauncher](https://github.com/amsitlab/termuxlauncher) by [@amsitlab](https://github.com/amsitlab) 
 - [Termux:Home](https://github.com/zenarvus/termux-home) by [@zenarvus](https://github.com/zenarvus)
-- [AnyHome](https://github.com/tytydraco/AnyHome) by [@tytydraco](https://github.com/tytydraco)
-- [TermuxLauncher](https://github.com/amsitlab/termuxlauncher) by [@amsitlab](https://github.com/amsitlab)

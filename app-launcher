@@ -48,7 +48,7 @@ if [ "$1" = "generate" ]; then
 		if [[ -n "${packagePaths[$package_name]}" && -z "${currentAppList[$package_name]}" ]]; then
 
 			#extract the apk name
-			apk_label=$(aapt dump badging ${packagePaths[$package_name]} | grep -oP "application: label='\K[^']+" --color=never | sed "s/ /-/")
+			apk_label=$(aapt dump badging ${packagePaths[$package_name]} | grep -oP "application: label='\K[^']+" --color=never | sed 's/ /-/g; s/\t/-/g; s/\n/-/g')
 
 			appList=$appList"$apk_label $packageMainActivity\n"
 
