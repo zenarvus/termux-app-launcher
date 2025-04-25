@@ -37,6 +37,6 @@ generate: generates a list of currently installed applications.
 
 ## Recommendations
 You can also make Termux your default home screen with one of these cool applications:
-- [AnyHome](https://github.com/tytydraco/AnyHome) by [@tytydraco](https://github.com/tytydraco) (Works on newer versions of android)
-- [TermuxLauncher](https://github.com/amsitlab/termuxlauncher) by [@amsitlab](https://github.com/amsitlab) 
 - [Termux:Home](https://github.com/zenarvus/termux-home) by [@zenarvus](https://github.com/zenarvus)
+- [AnyHome](https://github.com/tytydraco/AnyHome) by [@tytydraco](https://github.com/tytydraco)
+- [TermuxLauncher](https://github.com/amsitlab/termuxlauncher) by [@amsitlab](https://github.com/amsitlab) 
